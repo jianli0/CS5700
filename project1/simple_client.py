@@ -18,7 +18,7 @@ FLAG_START_POS = len(HEAD)
 '''
 The command of launching this app:
 
-    $ ./client <-p port> <-s> [hostname] [NEU ID]
+    $ ./simple_client <-p port> <-s> [hostname] [NEU ID]
 
 '''
 
@@ -32,7 +32,9 @@ def main():
     global SSL_PORT, PORT
     global SSL_ENABLE
 
-    if len(sys.argv) < 3: return
+    if len(sys.argv) < 3:
+        print("Not Enough Arguments")
+        return
 
     host = sys.argv[-2]
     HELLO_MSG = HEAD + (HELLO_MSG % sys.argv[-1])
@@ -54,15 +56,21 @@ def main():
         return
 
     my_socket.sendall(HELLO_MSG)
+
     secret_flag = ""
     while True:
+
         msg = my_socket.recv(1024)
         
         if "BYE" in msg:
-            secret_flag = msg[FLAG_START_POS:FLAG_START_POS+64]
+            secret_flag = msg[FLAG_START_POS+4:FLAG_START_POS+68]
             break
-
-        num1, op, num2 = msg.split()[-3:]
+        try:
+            num1, op, num2 = msg.split()[-3:]
+        except Exception:
+           print "Wrong message"
+           return
+            
         sol = 0
         if op == "+": sol = int(num1) + int(num2)
         elif op == "-": sol = int(num1) - int(num2)
