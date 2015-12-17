@@ -2,13 +2,12 @@
 ## HighLevel Approach ##
 ########################
 
-Our solution is to divide the problem into three layers (Application/TCP/IP) as in the ISO model. There are not strictly three layers in our project, but we follows the idea solving problem layer by layer.
+Our solution is to divide the problem into three layers (Application/TCP/IP) as in the ISO model. There are not strictly three layers in our project, but we follow the idea solving problem layer by layer.
 
-The application layer takes input of user, makes the request and calls sending process, as shown in figure below.A connection was built following three way handshake before the sending process. After packed by TCP and IP layer, the final IP_datagram is generated, and the final IP_datagram is sent to the corresponding remote_host.
+The application layer takes input of user, makes the request and calls sending process, as shown in figure below. A connection was built following three way handshake before the sending process. After packed by TCP and IP layer, the final IP_datagram is generated, and the final IP_datagram is sent to the corresponding remote_host.
 
-We keep monitoring all the packets received, if the source of it is the corresponding remote_host, we unpack the IP_Datagram layer by layer, as shown in figure below. 
-advertised window;
-
+We keep monitoring all the packets received, we unpack the IP_Datagram and check the validity of it layer by layer, as shown in figure below. 
+And we keep memory of each data and sort them according to tcp_seq number.
 
 Send:
 =========
@@ -59,7 +58,7 @@ IP features implemented(all required features implemented):
 
 2) set the correct version, header length and total length, protocol identifier and checksum in each outgoing packet.
 
-3) correctly set the source and destination IP in each outgoing packet.
+3) set the source and destination IP in each outgoing packet.
 
 TCP features implemented: 
 
@@ -82,6 +81,8 @@ TCP features implemented:
 9) identify and discard duplicate packets
 
 10) implement a basic congestion window
+
+
 
 ######################
 ## Challenges Faced ##
